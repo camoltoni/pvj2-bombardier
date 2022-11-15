@@ -15,7 +15,8 @@ class Tank extends ShooterActor
 
 	var _cannon:FlxSprite;
 	var _added:Bool = false;
-
+	public var cannonTarget:FlxPoint;
+	
 	public function new(?X:Float, ?Y:Float, bulletCallback:BulletOptions->Void, vertical:Bool, length:Int)
 	{
 		super(X, Y, bulletCallback);
