@@ -50,13 +50,13 @@ class PlayState extends FlxState
 		_bullets = new FlxTypedGroup<Bullet>();
 		add(_bullets);
 
-		_enemies = new FlxTypedGroup<ShooterActor>();
-		_planeSpawner = new PlaneSpawner(_enemies, addBullet);
-		SetObjects(_enemies, addBullet);
-
 		_powerUpSpawner = new PowerUpSpawner();
 		add(_powerUpSpawner);
 		_player = new Player(0, 0, addBullet);
+
+		_enemies = new FlxTypedGroup<ShooterActor>();
+		_planeSpawner = new PlaneSpawner(_enemies, addBullet);
+		SetObjects(_enemies, addBullet, cast(_player, FlxSprite));
 
 		_actors = new FlxGroup();
 		_actors.add(_player);
@@ -74,7 +74,7 @@ class PlayState extends FlxState
 
 	override public function update(elapsed:Float):Void
 	{
-		if (_updateCannonsTime <= 0.0)
+/* 		if (_updateCannonsTime <= 0.0)
 		{
 			_enemies.forEachAlive((o:ShooterActor) ->
 			{
@@ -86,7 +86,7 @@ class PlayState extends FlxState
 			});
 			_updateCannonsTime = SLOW_UPDATE_TIME;
 		}
-		_updateCannonsTime -= elapsed;
+		_updateCannonsTime -= elapsed; */
 		FlxG.overlap(_bullets, _actors, collideBulletActor);
 		FlxG.overlap(_player, _powerUpSpawner, onPowerUp);
 
