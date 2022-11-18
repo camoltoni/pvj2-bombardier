@@ -79,12 +79,14 @@ class Tank extends ShooterActor
 
 	public function updateCannon()
 	{
-		var target:FlxVector = _cannonTarget.getPosition();
-		if (FlxG.camera.containsRect(this.getScreenBounds()))
-		{
-			target = target.subtractPoint(getPosition());
-			var degree = (Math.atan2(target.y, target.x));
-			_cannon.angle = degree * 180 / Math.PI - 90;
+		if(_cannonTarget != null){
+			var target:FlxVector = _cannonTarget.getPosition();
+			if (FlxG.camera.containsRect(this.getScreenBounds()))
+			{
+				target = target.subtractPoint(getPosition());
+				var degree = (Math.atan2(target.y, target.x));
+				_cannon.angle = degree * 180 / Math.PI - 90;
+			}
 		}
 	}
 }

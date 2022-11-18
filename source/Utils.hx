@@ -1,5 +1,6 @@
 package;
 
+import PlayState.TankOptions;
 import flixel.FlxSprite;
 import flixel.addons.editors.tiled.TiledMap;
 import flixel.addons.editors.tiled.TiledObjectLayer;
@@ -19,18 +20,20 @@ function GetLayer(name:String, path:String, tiles:String, tilesetName:String):Fl
 	return map;
 }
 
-function SetObjects(tanks:FlxTypedGroup<ShooterActor>, bulletCallback, target:FlxSprite)
+function SetTanks():Array<TankOptions>
 {
 	var tiledMap = new TiledMap(AssetPaths.level01__tmx);
 	var objectLayer = cast(tiledMap.getLayer("tanks"), TiledObjectLayer);
-
+	var tanks:Array<TankOptions> = [];
 	for (o in objectLayer.objects)
 	{
 		if (o.type == "Tank")
 		{
 			var vertical:Bool = o.properties.get("vertical") == "true";
 			var length:Int = Std.parseInt(o.properties.get("length"));
-			tanks.add(new Tank(o.x, o.y - 16, bulletCallback, vertical, length, target));
+			// tanks.add(new Tank(o.x, o.y - 16, bulletCallback, vertical, length, target));
+			tanks.push({X: o.x, Y: o.y - 16, vertical: vertical, length: length});
 		}
 	}
+	return tanks;
 }

@@ -2,7 +2,6 @@ package;
 
 import flixel.system.FlxSound;
 import Utils.GetLayer;
-import Utils.SetObjects;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
@@ -19,17 +18,24 @@ typedef BulletOptions =
 	type:String,
 }
 
+typedef TankOptions = 
+{
+	X:Float,
+	Y:Float,
+	vertical:Bool,
+	length:Int,
+}
+
 class PlayState extends FlxState
 {
 	static inline var SLOW_UPDATE_TIME:Float = 0.1;
 
 	var _player:Player;
-	var _enemies:FlxTypedGroup<ShooterActor>;
 	var _actors:FlxGroup;
-	var _updateCannonsTime:Float = SLOW_UPDATE_TIME;
 	var _landingPoint:FlxPoint;
 	var _planeSpawner:PlaneSpawner;
 	var _powerUpSpawner:PowerUpSpawner;
+	var _enemies:EnemySpawner;
 	public var _bullets:FlxTypedGroup<Bullet>;
 	var _hud:HUD;
 	var _score:Int;
@@ -54,9 +60,9 @@ class PlayState extends FlxState
 		add(_powerUpSpawner);
 		_player = new Player(0, 0, addBullet);
 
-		_enemies = new FlxTypedGroup<ShooterActor>();
-		_planeSpawner = new PlaneSpawner(_enemies, addBullet);
-		SetObjects(_enemies, addBullet, cast(_player, FlxSprite));
+		// _enemies = new FlxTypedGroup<ShooterActor>();
+		_enemies = new EnemySpawner(addBullet, _player);
+		// SetObjects(_enemies, addBullet, cast(_player, FlxSprite));
 
 		_actors = new FlxGroup();
 		_actors.add(_player);
@@ -74,19 +80,7 @@ class PlayState extends FlxState
 
 	override public function update(elapsed:Float):Void
 	{
-/* 		if (_updateCannonsTime <= 0.0)
-		{
-			_enemies.forEachAlive((o:ShooterActor) ->
-			{
-				if (Std.isOfType(o, Tank))
-				{
-					var tank:Tank = cast(o, Tank);
-					tank.updateCannon(_player.getPosition());
-				}
-			});
-			_updateCannonsTime = SLOW_UPDATE_TIME;
-		}
-		_updateCannonsTime -= elapsed; */
+
 		FlxG.overlap(_bullets, _actors, collideBulletActor);
 		FlxG.overlap(_player, _powerUpSpawner, onPowerUp);
 
