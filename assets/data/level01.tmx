@@ -371,9 +371,9 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="4" name="objects" locked="1">
+ <objectgroup id="4" name="objects">
   <object id="16" name="Player" x="304" y="2176" width="32" height="32"/>
   <object id="17" name="Carrier" x="264" y="48" width="112" height="296"/>
-  <object id="18" name="End" x="304" y="720" width="32" height="32"/>
+  <object id="18" name="End" x="304" y="768" width="32" height="32"/>
  </objectgroup>
 </map>

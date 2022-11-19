@@ -83,18 +83,17 @@ class PlayState extends FlxState
 		FlxG.overlap(_bullets, _actors, collideBulletActor);
 		FlxG.overlap(_player, _powerUpSpawner, onPowerUp);
 
-		if(_powerUpSpawner.active) {
+		if(_enemies.spawn) {
 			if(FlxG.camera.scroll.y <= 720) {
-				_enemies.active = false;
+				_enemies.spawn = false;
 				_powerUpSpawner.spawn = false;
-				_target.velocity.y *= 2;
 			}
 		}
 		
 		if(!_player.landing){
 			if (FlxG.camera.scroll.y <= 480) {	
 				_player.landing = true;
-
+				_target.velocity.y *= 4;
 				FlxG.state.openSubState(new PauseSubState());
 			}
 		}

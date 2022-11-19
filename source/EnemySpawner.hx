@@ -39,6 +39,8 @@ class EnemySpawner extends FlxTypedGroup<ShooterActor>{
 		],
 	];
 
+	public var spawn:Bool;
+
     public function new(bulletCallback:BulletOptions->Void, target:FlxSprite) {
         super();
 		_bulletCallback = bulletCallback;
@@ -54,6 +56,7 @@ class EnemySpawner extends FlxTypedGroup<ShooterActor>{
 		});
 		_nexTank = _tanksArray.pop();
 		_target = target;
+		spawn = true;
     }
 
 	override public function update(elapsed:Float) {
@@ -89,18 +92,20 @@ class EnemySpawner extends FlxTypedGroup<ShooterActor>{
 
 	function waveLaunch()
 	{
-		var pathNumber:Int = FlxG.random.int(0, _paths.length - 1);
-		var path:Array<FlxPoint> = _paths[pathNumber];
-		var half:Float = FlxG.width / 2.0;
-		var separation:Float = half / 4.0;
-		var line:Float = FlxG.random.float(1, 3);
-		var start:FlxPoint = FlxPoint.get(separation * line, FlxG.camera.scroll.y - 96);
-		start.x += half * (pathNumber % 2);
-		new FlxTimer().start(0.3, (t:FlxTimer) ->
-		{
-			add(new Plane(start.x, start.y, _bulletCallback, AssetPaths.ship_0022__png, path));
-			_planeSFX.play();
-		}, 10);
+		if(spawn) {
+			var pathNumber:Int = FlxG.random.int(0, _paths.length - 1);
+			var path:Array<FlxPoint> = _paths[pathNumber];
+			var half:Float = FlxG.width / 2.0;
+			var separation:Float = half / 4.0;
+			var line:Float = FlxG.random.float(1, 3);
+			var start:FlxPoint = FlxPoint.get(separation * line, FlxG.camera.scroll.y - 96);
+			start.x += half * (pathNumber % 2);
+			new FlxTimer().start(0.3, (t:FlxTimer) ->
+			{
+				add(new Plane(start.x, start.y, _bulletCallback, AssetPaths.ship_0022__png, path));
+				_planeSFX.play();
+			}, 10);
+		}
 	}
 
     function loadTanks() {
