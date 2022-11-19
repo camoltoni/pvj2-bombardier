@@ -56,7 +56,7 @@ class Player extends ShooterActor
 		if (landing) {
 			x = FlxMath.lerp(x, FlxG.worldBounds.width / 2 - origin.x, _ratio * 5.0);
 			y = FlxMath.lerp(y, 112, _ratio);
-			_ratio += elapsed / 200.0;
+			_ratio += elapsed / 240.0;
 			if (hot > 0.0)
 				hot = 0.0;
 			if(_shootTimer.active)

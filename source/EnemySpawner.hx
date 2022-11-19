@@ -59,7 +59,7 @@ class EnemySpawner extends FlxTypedGroup<ShooterActor>{
 	override public function update(elapsed:Float) {
 		if(_nexTank != null) {
 			if(FlxG.camera.scroll.y - 32 < _nexTank.Y) {
-				add(new Tank(_nexTank.X, _nexTank.Y - 16, 
+				add(new Tank(_nexTank.X, _nexTank.Y, 
 					_bulletCallback, 
 					_nexTank.vertical, 
 					_nexTank.length, 
