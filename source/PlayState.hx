@@ -33,7 +33,6 @@ class PlayState extends FlxState
 	var _player:Player;
 	var _actors:FlxGroup;
 	var _landingPoint:FlxPoint;
-	var _planeSpawner:PlaneSpawner;
 	var _powerUpSpawner:PowerUpSpawner;
 	var _enemies:EnemySpawner;
 	public var _bullets:FlxTypedGroup<Bullet>;
@@ -42,6 +41,7 @@ class PlayState extends FlxState
 	var _enemyHitSFX:FlxSound;
 	var _playerHitSFX:FlxSound;
 	var _pickupSFX:FlxSound;
+	var _target:FlxSprite;
 
 	override public function create():Void
 	{
@@ -60,9 +60,8 @@ class PlayState extends FlxState
 		add(_powerUpSpawner);
 		_player = new Player(0, 0, addBullet);
 
-		// _enemies = new FlxTypedGroup<ShooterActor>();
 		_enemies = new EnemySpawner(addBullet, _player);
-		// SetObjects(_enemies, addBullet, cast(_player, FlxSprite));
+
 
 		_actors = new FlxGroup();
 		_actors.add(_player);
@@ -84,17 +83,20 @@ class PlayState extends FlxState
 		FlxG.overlap(_bullets, _actors, collideBulletActor);
 		FlxG.overlap(_player, _powerUpSpawner, onPowerUp);
 
-		if (FlxG.camera.scroll.y < _landingPoint.y)
-			_player.landing = true;
-
-		if (FlxG.camera.scroll.y <= 240+96) {
-			_planeSpawner.active = false;
-			_powerUpSpawner.spawn = false;
+		if(_powerUpSpawner.active) {
+			if(FlxG.camera.scroll.y <= 720) {
+				_enemies.active = false;
+				_powerUpSpawner.spawn = false;
+				_target.velocity.y *= 2;
+			}
 		}
+		
+		if(!_player.landing){
+			if (FlxG.camera.scroll.y <= 480) {	
+				_player.landing = true;
 
-		if (FlxG.camera.scroll.y < 240) {
-			_player.landing = true;
-			FlxG.state.openSubState(new PauseSubState());
+				FlxG.state.openSubState(new PauseSubState());
+			}
 		}
 
 		super.update(elapsed);
@@ -102,18 +104,18 @@ class PlayState extends FlxState
 
 	function cameraTarget():Void
 	{
-		FlxG.worldBounds.set(0, 0, FlxG.width, FlxG.height * 4);
-		FlxG.camera.setScrollBoundsRect(0, 0, FlxG.width, FlxG.height * 4);
-		var target:FlxSprite = new FlxSprite();
-		target.solid = false;
-		target.makeGraphic(1, 1, FlxColor.RED, true);
-		target.alpha = 0.0;
-		target.screenCenter(X);
-		target.y = FlxG.worldBounds.bottom - FlxG.height / 2.0;
-		target.velocity.y = -30.0;
+		FlxG.worldBounds.set(0, 0, FlxG.width, 140 * 16);
+		FlxG.camera.setScrollBoundsRect(0, 0, FlxG.width, 140 * 16);
+		_target = new FlxSprite();
+		_target.solid = false;
+		_target.makeGraphic(1, 1, FlxColor.RED, true);
+		_target.alpha = 0.0;
+		_target.screenCenter(X);
+		_target.y = FlxG.worldBounds.bottom - FlxG.height / 2.0;
+		_target.velocity.y = -30.0;
 
-		FlxG.camera.follow(target, LOCKON);
-		add(target);
+		FlxG.camera.follow(_target, LOCKON);
+		add(_target);
 		FlxG.camera.updateFollow();
 	}
 
