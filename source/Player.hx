@@ -1,12 +1,11 @@
 package;
 
-import flixel.system.FlxSound;
-import flixel.math.FlxMath;
-import flixel.tweens.FlxTween;
 import PlayState.BulletOptions;
 import PowerUpSpawner.PowerUpType;
 import flixel.FlxG;
+import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
+import flixel.system.FlxSound;
 import flixel.util.FlxAxes;
 import flixel.util.FlxTimer;
 
@@ -22,6 +21,7 @@ class Player extends ShooterActor
 	var _ratio:Float;
 	var _shootSFX:FlxSound;
 	var _overheatingSFX:FlxSound;
+
 	public var landing:Bool;
 	public var hot:Float = 0.0;
 
@@ -37,7 +37,8 @@ class Player extends ShooterActor
 			_shooting();
 			_shootSFX.play();
 			hot++;
-			if (hot > 20) {
+			if (hot > 20)
+			{
 				_overheatingSFX.play();
 				t.active = false;
 			}
@@ -53,17 +54,20 @@ class Player extends ShooterActor
 
 	override public function update(elapsed:Float)
 	{
-		if (landing) {
+		if (landing)
+		{
 			x = FlxMath.lerp(x, FlxG.worldBounds.width / 2 - origin.x, _ratio * 5.0);
 			y = FlxMath.lerp(y, 112, _ratio);
 			_ratio += elapsed / 240.0;
 			if (hot > 0.0)
 				hot = 0.0;
-			if(_shootTimer.active)
+			if (_shootTimer.active)
 				_shootTimer.cancel();
-			if(velocity.x != 0.0 || velocity.y != 0.0)
+			if (velocity.x != 0.0 || velocity.y != 0.0)
 				velocity.set();
-		} else {
+		}
+		else
+		{
 			var vel:FlxPoint = FlxPoint.get();
 
 			if (FlxG.keys.anyPressed([UP, W]))
@@ -87,6 +91,12 @@ class Player extends ShooterActor
 			y = Math.max(FlxG.camera.scroll.y, Math.min(y, FlxG.camera.scroll.y + FlxG.height - height));
 		}
 		super.update(elapsed);
+	}
+
+	override public function kill()
+	{
+		super.kill();
+		FlxG.resetState();
 	}
 
 	public function powerUpPicked(type:PowerUpType)

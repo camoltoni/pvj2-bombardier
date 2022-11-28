@@ -131,12 +131,10 @@ class PlayState extends FlxState
 			{
 				if (_enemies.members.contains(actor))
 				{
-					actor.health -= 1.0;
+					actor.hurt(1.0);
 					_score += 100;
 					_hud.setScore(_score);
 					_enemyHitSFX.play();
-					if (actor.health <= 0.0)
-						actor.kill();
 				}
 				bullet.kill();
 			}
@@ -145,13 +143,8 @@ class PlayState extends FlxState
 				if (Std.isOfType(actor, Player))
 				{
 					bullet.kill();
-					actor.health -= 0.5;
+					actor.hurt(0.5);
 					_playerHitSFX.play();
-					if (actor.health <= 0.0)
-					{
-						actor.kill();
-						FlxG.resetState();
-					}
 				}
 			}
 		}
@@ -162,5 +155,7 @@ class PlayState extends FlxState
 		player.powerUpPicked(powerUp.type);
 		_pickupSFX.play();
 		powerUp.kill();
+		_score += 500;
+		_hud.setScore(_score);
 	}
 }
