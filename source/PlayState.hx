@@ -75,6 +75,7 @@ class PlayState extends FlxState
 		_playerHitSFX = FlxG.sound.load(AssetPaths.umph__ogg);
 		_pickupSFX = FlxG.sound.load(AssetPaths.pickup__ogg);
 		FlxG.sound.playMusic(AssetPaths.Pompy__ogg, 0.5);
+		FlxG.mouse.visible = false;
 	}
 
 	override public function update(elapsed:Float):Void
